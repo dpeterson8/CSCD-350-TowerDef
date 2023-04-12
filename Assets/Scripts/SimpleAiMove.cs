@@ -16,11 +16,11 @@ public class SimpleAiMove : MonoBehaviour
 
     void Update() {
 
-        MoveChar(wPoints, setSpeed, wayPointIndex); 
+        wayPointIndex = MoveChar(wPoints, setSpeed, wayPointIndex); 
 
     }
 
-    private void MoveChar(Waypoints curWayPoints, float speed, int index) {
+    private int MoveChar(Waypoints curWayPoints, float speed, int index) {
         // If character is in bounds of map move
         if(!(index > curWayPoints.waypoints.Length - 1)) {
 
@@ -30,9 +30,13 @@ public class SimpleAiMove : MonoBehaviour
                 index++;
             }
 
+
         } else {
             // If character reached last waypoint Destroy it
             Destroy(gameObject);
+
         }
+
+        return index;
     }
 }
