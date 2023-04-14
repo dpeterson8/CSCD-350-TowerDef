@@ -4,3 +4,5 @@ This game was created for the CSCD 350 class group assignment. At the moment the
 - Unity
 ## Assets Being Used 
 - https://assetstore.unity.com/packages/2d/environments/isometric-tower-defense-pack-183472
+## Team Trello Board 
+- https://trello.com/b/KYTf8KLM/main-board
