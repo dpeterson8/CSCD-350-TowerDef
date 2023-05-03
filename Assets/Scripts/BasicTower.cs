@@ -1,9 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
+
+enum towerStatus
+{
+    idle,
+    attack,
+    placing
+}
 
 public class BasicTower : MonoBehaviour
 {
+    private towerStatus status;
     private float zCord;
     private Vector3 mouseOffset;
     private Grid grid;
@@ -19,21 +28,26 @@ public class BasicTower : MonoBehaviour
     public float projectileSpeed;
 
     public BasicEnemy curEnemy;
+    public Tilemap roadMap;
 
      
     void Start()
     {
         grid = Grid.FindObjectOfType<Grid>();
         renderer = GetComponent<Renderer>();
+        status = towerStatus.attack;
+        roadMap = GameObject.Find("Road").GetComponent<Tilemap>();
     }
 
     void Update()
     {
+
         Vector3Int cellPosition = grid.WorldToCell(transform.position);
         transform.localPosition = grid.GetCellCenterWorld(cellPosition);
+        Debug.Log(roadMap.GetTile(grid.WorldToCell(transform.position)));
+        startcolor = renderer.material.color;
 
-        // Used to check attack status
-        if (Time.time - lastAttackTime > attackRate) {
+        if (Time.time - lastAttackTime > attackRate && status == towerStatus.attack) {
             lastAttackTime = Time.time;
             curEnemy = nextEnemy();
 
@@ -81,7 +95,7 @@ public class BasicTower : MonoBehaviour
     }
 
     void OnMouseDown() {
-        Debug.Log("Mouse Down");
+        this.status = towerStatus.placing;
         zCord = Camera.main.WorldToScreenPoint(transform.position).z;
         mouseOffset = transform.position - mouseWordPosition();
     }
@@ -89,6 +103,18 @@ public class BasicTower : MonoBehaviour
     private void OnMouseDrag() {
         transform.position = mouseWordPosition() + mouseOffset;
         startcolor = renderer.material.color;
-        renderer.material.color = Color.yellow;
+        if(roadMap.GetTile(grid.WorldToCell(transform.position)) == null)
+        {
+            renderer.material.color = Color.green;
+        }
+        else
+        {
+            renderer.material.color = Color.red;
+        }
+    }
+    
+    private void OnMouseUp() {
+        renderer.material.color = startcolor;
+        status = towerStatus.attack;    
     }
 }

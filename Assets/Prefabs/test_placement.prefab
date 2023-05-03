@@ -27,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9029188012201300933}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 10.29, y: -15.88, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -142,3 +142,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   renderer: {fileID: 0}
+  projectilePrefab: {fileID: 2535638899063959771, guid: 968dfd4b811ca764d807e5e48c059f17, type: 3}
+  attackRate: 1
+  towerDamage: 1
+  projectileSpeed: 7.99
+  curEnemy: {fileID: 0}
+  roadMap: {fileID: 0}

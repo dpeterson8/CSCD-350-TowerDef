@@ -6,6 +6,7 @@ public class CreateTowerButton : MonoBehaviour
 {
     public GameObject towerPre;
     void OnMouseDown() {
-        Instantiate(towerPre, Input.mousePosition, Quaternion.identity);
+        Vector2 spawnPos = Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f));
+        Instantiate(towerPre, spawnPos, Quaternion.identity);
     }
 }
