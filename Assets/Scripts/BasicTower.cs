@@ -9,12 +9,16 @@ public class BasicTower : MonoBehaviour
     private Grid grid;
      private Color startcolor;
     public new Renderer renderer;
-    private List<SimpleAiMove> curEnemiesInRange = new List<SimpleAiMove>();
+    public GameObject projectilePrefab;
 
-        public float attackRate;
-    private float lastAttackTime;
+    private List<BasicEnemy> curEnemiesInRange = new List<BasicEnemy>();
 
-    public SimpleAiMove curEnemy;
+    public float attackRate;
+    private float lastAttackTime = 0;
+    public int towerDamage;
+    public float projectileSpeed;
+
+    public BasicEnemy curEnemy;
 
      
     void Start()
@@ -27,9 +31,11 @@ public class BasicTower : MonoBehaviour
     {
         Vector3Int cellPosition = grid.WorldToCell(transform.position);
         transform.localPosition = grid.GetCellCenterWorld(cellPosition);
+
         // Used to check attack status
         if (Time.time - lastAttackTime > attackRate) {
             lastAttackTime = Time.time;
+            curEnemy = nextEnemy();
 
             if(curEnemy != null) {
                 Attack();
@@ -37,16 +43,17 @@ public class BasicTower : MonoBehaviour
         }
     }
 
-    SimpleAiMove nextEnemy() {
-        if(curEnemiesInRange[0] !=  null) {
+    BasicEnemy nextEnemy() {
+        if(curEnemiesInRange.Count > 0) {
             return curEnemiesInRange[0];
         }
         
-        return new SimpleAiMove();
+        return null;
     }
 
     void Attack() {
-        Debug.Log("Attack()");
+        GameObject projectileObject = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        projectileObject.GetComponent<BasicProjectile>().Initialize(curEnemy, towerDamage, projectileSpeed);
     }
 
     private Vector3 mouseWordPosition() {
@@ -59,7 +66,7 @@ public class BasicTower : MonoBehaviour
     {
         if(other.CompareTag("Enemy"))
         {
-            curEnemiesInRange.Add(other.GetComponent<SimpleAiMove>());
+            curEnemiesInRange.Add(other.GetComponent<BasicEnemy>());
             Debug.Log("in");
         }
     }
@@ -68,7 +75,7 @@ public class BasicTower : MonoBehaviour
     {
         if(other.CompareTag("Enemy"))
         {
-            curEnemiesInRange.Remove(other.GetComponent<SimpleAiMove>());
+            curEnemiesInRange.Remove(other.GetComponent<BasicEnemy>());
             Debug.Log("Out");
         }   
     }

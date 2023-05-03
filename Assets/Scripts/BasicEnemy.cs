@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimpleAiMove : MonoBehaviour
+public class BasicEnemy : MonoBehaviour
 {
     public float setSpeed;
     private Waypoints wPoints;
     private int wayPointIndex;
+    public int health = 10;
 
     void Start() {
 
@@ -38,5 +39,13 @@ public class SimpleAiMove : MonoBehaviour
         }
 
         return index;
+    }
+
+    public void TakeDamage(int damage) {
+        health -= damage;
+
+        if(health <= 0) {
+            Destroy(gameObject);
+        }
     }
 }
