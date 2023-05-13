@@ -16,17 +16,15 @@ public class BasicTower : MonoBehaviour
     private float zCord;
     private Vector3 mouseOffset;
     private Grid grid;
-     private Color startcolor;
+    private Color startcolor;
     public new Renderer renderer;
     public GameObject projectilePrefab;
-
+    private Material orignalMaterial;
     private List<BasicEnemy> curEnemiesInRange = new List<BasicEnemy>();
-
     public float attackRate;
     private float lastAttackTime = 0;
     public int towerDamage;
     public float projectileSpeed;
-
     public BasicEnemy curEnemy;
     public Tilemap roadMap;
 
@@ -37,6 +35,8 @@ public class BasicTower : MonoBehaviour
         renderer = GetComponent<Renderer>();
         status = towerStatus.attack;
         roadMap = GameObject.Find("Road").GetComponent<Tilemap>();
+        startcolor = GetComponent<Renderer>().material.color;
+        orignalMaterial = renderer.material;
     }
 
     void Update()
@@ -45,7 +45,7 @@ public class BasicTower : MonoBehaviour
         Vector3Int cellPosition = grid.WorldToCell(transform.position);
         transform.localPosition = grid.GetCellCenterWorld(cellPosition);
         Debug.Log(roadMap.GetTile(grid.WorldToCell(transform.position)));
-        startcolor = renderer.material.color;
+        roadMap.SetColor(grid.WorldToCell(transform.position), Color.green.a == 1 ? Color.green : Color.red);
 
         if (Time.time - lastAttackTime > attackRate && status == towerStatus.attack) {
             lastAttackTime = Time.time;
@@ -109,12 +109,11 @@ public class BasicTower : MonoBehaviour
         }
         else
         {
-            renderer.material.color = Color.red;
+            renderer.material = orignalMaterial;
         }
     }
     
     private void OnMouseUp() {
-        renderer.material.color = startcolor;
-        status = towerStatus.attack;    
+        renderer.material.color = Color.black;
     }
 }
