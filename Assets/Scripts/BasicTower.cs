@@ -33,27 +33,22 @@ public class BasicTower : MonoBehaviour
     {
         grid = Grid.FindObjectOfType<Grid>();
         renderer = GetComponent<Renderer>();
-        status = towerStatus.attack;
         roadMap = GameObject.Find("Road").GetComponent<Tilemap>();
         startcolor = GetComponent<Renderer>().material.color;
         orignalMaterial = renderer.material;
+        status = towerStatus.placing;
     }
 
     void Update()
     {
 
-        Vector3Int cellPosition = grid.WorldToCell(transform.position);
-        transform.localPosition = grid.GetCellCenterWorld(cellPosition);
-        Debug.Log(roadMap.GetTile(grid.WorldToCell(transform.position)));
-        roadMap.SetColor(grid.WorldToCell(transform.position), Color.green.a == 1 ? Color.green : Color.red);
-
-        if (Time.time - lastAttackTime > attackRate && status == towerStatus.attack) {
-            lastAttackTime = Time.time;
-            curEnemy = nextEnemy();
-
-            if(curEnemy != null) {
-                Attack();
-            }
+        if (status == towerStatus.placing) {
+            Vector3Int cellPosition = grid.WorldToCell(transform.position);
+            transform.localPosition = grid.GetCellCenterWorld(cellPosition);
+            Debug.Log(roadMap.GetTile(grid.WorldToCell(transform.position)));
+            isTowerValid();
+        } else if (status == towerStatus.attack) {
+            Attack();
         }
     }
 
@@ -66,11 +61,17 @@ public class BasicTower : MonoBehaviour
     }
 
     void Attack() {
-        GameObject projectileObject = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-        projectileObject.GetComponent<BasicProjectile>().Initialize(curEnemy, towerDamage, projectileSpeed);
+        if (Time.time - lastAttackTime > attackRate && status == towerStatus.attack) {
+            lastAttackTime = Time.time;
+            curEnemy = nextEnemy();
+
+            if(curEnemy != null) {
+                GameObject projectileObject = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+                projectileObject.GetComponent<BasicProjectile>().Initialize(curEnemy, towerDamage, projectileSpeed);            }
+            }
     }
 
-    private Vector3 mouseWordPosition() {
+    private Vector3 mouseWorldPosition() {
         Vector3 mousePosition = Input.mousePosition;
         mousePosition.z = zCord;
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
@@ -85,7 +86,7 @@ public class BasicTower : MonoBehaviour
         }
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         if(other.CompareTag("Enemy"))
         {
@@ -94,26 +95,36 @@ public class BasicTower : MonoBehaviour
         }   
     }
 
-    void OnMouseDown() {
-        this.status = towerStatus.placing;
-        zCord = Camera.main.WorldToScreenPoint(transform.position).z;
-        mouseOffset = transform.position - mouseWordPosition();
+    private void OnMouseDown() {
+        if (status == towerStatus.placing) {
+            zCord = Camera.main.WorldToScreenPoint(transform.position).z;
+            mouseOffset = transform.position - mouseWorldPosition();
+        }
     }
 
     private void OnMouseDrag() {
-        transform.position = mouseWordPosition() + mouseOffset;
-        startcolor = renderer.material.color;
-        if(roadMap.GetTile(grid.WorldToCell(transform.position)) == null)
-        {
-            renderer.material.color = Color.green;
+        if (status == towerStatus.placing) {
+            transform.position = mouseWorldPosition() + mouseOffset;
+            startcolor = renderer.material.color;
         }
-        else
-        {
-            renderer.material = orignalMaterial;
+    }
+
+    private void OnMouseUp() {
+        if (isTowerValid()) {
+            status = towerStatus.attack;
         }
     }
     
-    private void OnMouseUp() {
-        renderer.material.color = Color.black;
+    private bool isTowerValid() {
+        if(roadMap.GetTile(grid.WorldToCell(transform.position)) == null)
+        {
+            renderer.material.color = Color.green;
+            return true;
+        }
+        else
+        {
+            renderer.material.color = Color.red;
+            return false;
+        }
     }
 }

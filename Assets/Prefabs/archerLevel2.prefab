@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 9029188012201300926}
   - component: {fileID: 532730469273481893}
   m_Layer: 0
-  m_Name: test_placement
+  m_Name: archerLevel2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
