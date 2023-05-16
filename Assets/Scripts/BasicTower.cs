@@ -12,6 +12,7 @@ enum towerStatus
 
 public class BasicTower : MonoBehaviour
 {
+    private PlayerUI playerUI;
     private towerStatus status;
     private float zCord;
     private Vector3 mouseOffset;
@@ -27,6 +28,8 @@ public class BasicTower : MonoBehaviour
     public float projectileSpeed;
     public BasicEnemy curEnemy;
     public Tilemap roadMap;
+    public GameObject moveButton, sellButton;
+    
 
      
     void Start()
@@ -37,6 +40,7 @@ public class BasicTower : MonoBehaviour
         startcolor = GetComponent<Renderer>().material.color;
         orignalMaterial = renderer.material;
         status = towerStatus.placing;
+        playerUI = GameObject.Find("PlayerUI").GetComponent<PlayerUI>();
     }
 
     void Update()
@@ -52,7 +56,7 @@ public class BasicTower : MonoBehaviour
         }
     }
 
-    BasicEnemy nextEnemy() {
+    private BasicEnemy nextEnemy() {
         if(curEnemiesInRange.Count > 0) {
             return curEnemiesInRange[0];
         }
@@ -60,7 +64,7 @@ public class BasicTower : MonoBehaviour
         return null;
     }
 
-    void Attack() {
+    private void Attack() {
         if (Time.time - lastAttackTime > attackRate && status == towerStatus.attack) {
             lastAttackTime = Time.time;
             curEnemy = nextEnemy();
@@ -110,13 +114,18 @@ public class BasicTower : MonoBehaviour
     }
 
     private void OnMouseUp() {
-        if (isTowerValid()) {
+        if (status == towerStatus.attack) {
+            sellButton.SetActive(true);
+            moveButton.SetActive(true);
+            status = towerStatus.idle;
+        } else if (isTowerValid()) {
+            renderer.material.color = Color.white;
             status = towerStatus.attack;
         }
     }
     
     private bool isTowerValid() {
-        if(roadMap.GetTile(grid.WorldToCell(transform.position)) == null)
+        if(roadMap.GetTile(grid.WorldToCell(transform.position)) == null && playerUI.isTowerValid(transform))
         {
             renderer.material.color = Color.green;
             return true;
