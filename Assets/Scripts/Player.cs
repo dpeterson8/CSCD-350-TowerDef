@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
 
     public static ArrayList _towers;
     public int health = 100;
-    public int money;
+    public int money = 0;
     public int enemyCount;
     public playerState gameState = playerState.attack;
 

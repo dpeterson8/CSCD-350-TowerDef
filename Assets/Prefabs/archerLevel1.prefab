@@ -214,7 +214,6 @@ GameObject:
   - component: {fileID: 9029188012201300931}
   - component: {fileID: 9029188012201300929}
   - component: {fileID: 532730469273481893}
-  - component: {fileID: 5076114248121767415}
   - component: {fileID: 3126062339070822061}
   m_Layer: 0
   m_Name: archerLevel1
@@ -329,27 +328,6 @@ MonoBehaviour:
   roadMap: {fileID: 0}
   moveButton: {fileID: 5068404348168498949}
   sellButton: {fileID: 4310113410293391307}
---- !u!50 &5076114248121767415
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9029188012201300933}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 0.0001
-  m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!60 &3126062339070822061
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -360,7 +338,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

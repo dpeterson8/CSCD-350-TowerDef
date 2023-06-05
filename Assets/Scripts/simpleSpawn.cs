@@ -7,7 +7,11 @@ public class simpleSpawn : MonoBehaviour
     [SerializeField]
     private GameObject enemyPrefab;
     [SerializeField]
+    private GameObject spawnPoint;
+    [SerializeField]
     private float spawnInterval;
+
+    public int maxEnemies = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +22,12 @@ public class simpleSpawn : MonoBehaviour
     private IEnumerator spawnEnemy(float interval, GameObject currentEnemy) {
         yield return new WaitForSeconds(interval);
 
-        GameObject newEnemy = Instantiate(enemyPrefab, new Vector3(Random.Range(-5f, 5), Random.Range(-6f, 6), 0), Quaternion.identity);
-        StartCoroutine(spawnEnemy(interval, enemyPrefab));
+        if(maxEnemies > 0) {
+            GameObject newEnemy = Instantiate(enemyPrefab, spawnPoint.transform.position , Quaternion.identity);
+            StartCoroutine(spawnEnemy(interval, enemyPrefab));
+            maxEnemies--;
+        }
+        // GameObject newEnemy = Instantiate(enemyPrefab, spawnPoint.transform.position , Quaternion.identity);
+        // StartCoroutine(spawnEnemy(interval, enemyPrefab));
     }
 }
