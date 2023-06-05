@@ -114,11 +114,12 @@ public class BasicTower : MonoBehaviour
     }
 
     private void OnMouseUp() {
-        if (status == towerStatus.attack) {
-            sellButton.SetActive(true);
-            moveButton.SetActive(true);
-            status = towerStatus.idle;
-        } else if (isTowerValid()) {
+        // if (status == towerStatus.attack) {
+        //     sellButton.SetActive(true);
+        //     moveButton.SetActive(true);
+        //     status = towerStatus.idle;
+        // } else 
+        if (isTowerValid()) {
             renderer.material.color = Color.white;
             status = towerStatus.attack;
         }
