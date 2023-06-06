@@ -8,6 +8,8 @@ public class BasicEnemy : MonoBehaviour
     private Waypoints wPoints;
     private int wayPointIndex;
     public int health = 10;
+    public int damage = 1;
+    public int enemyValue = 10;
 
     void Start() {
 
@@ -31,11 +33,8 @@ public class BasicEnemy : MonoBehaviour
                 index++;
             }
 
-
         } else {
-            // If character reached last waypoint Destroy it
-            Destroy(gameObject);
-
+            onEnd();
         }
 
         return index;
@@ -45,7 +44,13 @@ public class BasicEnemy : MonoBehaviour
         health -= damage;
 
         if(health <= 0) {
+            Player.Instance.money += enemyValue;
             Destroy(gameObject);
         }
+    }
+
+    public void onEnd() {
+        Player.Instance.health -= damage;
+        Destroy(gameObject);
     }
 }
