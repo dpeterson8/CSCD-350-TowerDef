@@ -30,9 +30,11 @@ public class PlayerUI : MonoBehaviour
         moneyText.text = player.getPlayerMoney().ToString();
         healthText.text = player.getPlayerHealth().ToString();
         }
+
     }
 
     public void restartLevel() {
+        Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -41,12 +43,12 @@ public class PlayerUI : MonoBehaviour
     }
 
     public void loadMainMenu() {
+        Time.timeScale = 1;
         SceneManager.LoadScene(0);
     }  
 
     public void pauseGame() {
         Time.timeScale = 0;
-
     }
 
     public void CreateTower(string towerTypeEnum) {

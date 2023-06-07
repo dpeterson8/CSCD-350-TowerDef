@@ -19,17 +19,21 @@ public class Player : MonoBehaviour
     public int money = 0;
     public int enemyCount;
     public playerState gameState = playerState.attack;
+    public Canvas loseMenu;
 
     private void Awake () {
         if (Instance == null) {
             Instance = this;
         } else {
         }
+
+        Time.timeScale = 1;
     }
 
     private void Update() {
         if(health <= 0) {
-            gameState = playerState.endRound;
+            Time.timeScale = 0;
+            loseMenu.gameObject.SetActive(true);
         }
     }
 

@@ -10,24 +10,22 @@ public class simpleSpawn : MonoBehaviour
     private GameObject spawnPoint;
     [SerializeField]
     private float spawnInterval;
-
-    public int maxEnemies = 10;
+    public int enemies = 10;
 
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(spawnEnemy(spawnInterval, enemyPrefab));
     }
-
+    
     private IEnumerator spawnEnemy(float interval, GameObject currentEnemy) {
         yield return new WaitForSeconds(interval);
 
-        if(maxEnemies > 0) {
+        if(enemies > 0) {
             GameObject newEnemy = Instantiate(enemyPrefab, spawnPoint.transform.position , Quaternion.identity);
             StartCoroutine(spawnEnemy(interval, enemyPrefab));
-            maxEnemies--;
+            enemies--;
         }
-        // GameObject newEnemy = Instantiate(enemyPrefab, spawnPoint.transform.position , Quaternion.identity);
-        // StartCoroutine(spawnEnemy(interval, enemyPrefab));
+
     }
 }

@@ -11,6 +11,8 @@ public class BasicEnemy : MonoBehaviour
     public int damage = 1;
     public int enemyValue = 10;
 
+    public simpleSpawn enemyCount;
+
     void Start() {
 
         wPoints = GameObject.FindGameObjectWithTag("Waypoints").GetComponent<Waypoints>();
