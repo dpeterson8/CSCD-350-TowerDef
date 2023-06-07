@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using TMPro;
+using UnityEngine.SceneManagement;
+
 
 public class PlayerUI : MonoBehaviour
 {
@@ -24,13 +26,32 @@ public class PlayerUI : MonoBehaviour
 
     void Update()
     {
+        if(this.name == "PlayerUI") {
         moneyText.text = player.getPlayerMoney().ToString();
         healthText.text = player.getPlayerHealth().ToString();
+        }
+    }
+
+    public void restartLevel() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void continueGame() {
+        Time.timeScale = 1;
+    }
+
+    public void loadMainMenu() {
+        SceneManager.LoadScene(0);
+    }  
+
+    public void pauseGame() {
+        Time.timeScale = 0;
+
     }
 
     public void CreateTower(string towerTypeEnum) {
-        if(towerTypeEnum.ToLower() == "range" && player.getPlayerMoney() >= 25) {
-            player.money -= 25;
+        if(towerTypeEnum.ToLower() == "range" && player.getPlayerMoney() >= 20) {
+            player.money -= 20;
             Vector2 spawnPos = Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f));
             GameObject newTower = GameObject.Instantiate(rangeTowerPre, spawnPos, Quaternion.identity);
         } else if(towerTypeEnum.ToLower() == "mage" && player.getPlayerMoney() >= 30) {
