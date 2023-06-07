@@ -14,6 +14,10 @@ public class GameManager: Singleton<GameManager> {
         ChangeState(GameState.StartLevel);
     }
 
+    void update() {
+        Debug.Log(State);
+    }
+
     public void ChangeState(GameState newState) {
         OnBeforeStateChanged?.Invoke(newState);
 
@@ -42,12 +46,10 @@ public class GameManager: Singleton<GameManager> {
     }
 
     public void Placing() {
-        Time.timeScale = 0;
         ChangeState(GameState.Attack);
     }
 
     public void Attack() {
-        Time.timeScale = 1;
         ChangeState(GameState.Win);
     }
 
